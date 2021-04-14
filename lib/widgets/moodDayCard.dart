@@ -83,8 +83,8 @@ class _MoodDayState extends State<MoodDay> {
             Expanded(
               child: Row(
                 children: <Widget>[
-                  SizedBox(width:80)
-                  ,ListView.builder(
+                  SizedBox(width: 80),
+                  ListView.builder(
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
                       itemCount: widget.a.length,
@@ -99,12 +99,12 @@ class _MoodDayState extends State<MoodDay> {
                 ],
               ),
             ),
-            SizedBox(width:50),
+            SizedBox(width: 50),
             Expanded(
               child: Row(
                 children: <Widget>[
-                  SizedBox(width:80)
-                  ,ListView.builder(
+                  SizedBox(width: 80),
+                  ListView.builder(
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
                       itemCount: widget.b.length,

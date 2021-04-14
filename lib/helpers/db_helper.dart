@@ -1,5 +1,3 @@
-
-
 import 'package:moodairy/models/moodcard.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:path/path.dart' as path;
@@ -26,17 +24,12 @@ class DBHelper {
 
   static Future<List<Map<String, dynamic>>> getData(String table) async {
     final db = await DBHelper.database();
-    var res= await db.rawQuery("SELECT * FROM $table");
+    var res = await db.rawQuery("SELECT * FROM $table");
     return res.toList();
-    
   }
 
-  
-  
-  static Future<void> delete(String datetime) async{
-
-    final db= await DBHelper.database();
-    await  db.rawDelete('DELETE FROM user_moods WHERE datetime = ?',[datetime]);
-
+  static Future<void> delete(String datetime) async {
+    final db = await DBHelper.database();
+    await db.rawDelete('DELETE FROM user_moods WHERE datetime = ?', [datetime]);
   }
 }
