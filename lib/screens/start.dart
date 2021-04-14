@@ -4,15 +4,15 @@ import 'package:moodairy/models/activity.dart';
 import 'package:moodairy/models/mood.dart';
 import 'package:moodairy/models/moodcard.dart';
 import 'package:moodairy/widgets/activity.dart';
-import 'package:moodairy/widgets/moodicon.dart';
+import 'package:moodairy/widgets/moodIcon.dart';
 import 'package:provider/provider.dart';
 
-class StartPage extends StatefulWidget {
+class OldStartPage extends StatefulWidget {
   @override
-  _StartPageState createState() => _StartPageState();
+  _OldStartPageState createState() => _OldStartPageState();
 }
 
-class _StartPageState extends State<StartPage> {
+class _OldStartPageState extends State<OldStartPage> {
   MoodCard moodCard;
   String mood;
   String image;
@@ -40,7 +40,7 @@ class _StartPageState extends State<StartPage> {
     Activity('assets/gaming.png', 'Gaming', false),
     Activity('assets/friends.png', 'Friends', false),
     Activity('assets/family.png', 'Family', false),
-    Activity('assets/excercise.png', 'Excercise', false),
+    Activity('assets/exercise.png', 'Excercise', false),
     Activity('assets/eat.png', 'Eat', false),
     Activity('assets/date.png', 'Date', false),
     Activity('assets/clean.png', 'Clean', false)
@@ -58,48 +58,46 @@ class _StartPageState extends State<StartPage> {
             title: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('MOOD Dairy',
-                style: TextStyle(fontStyle: FontStyle.normal, fontWeight: FontWeight.bold)),
-                SizedBox(width: 5,),
-                Icon(Icons.insert_emoticon , color: Colors.white , size: 25)
+                Text('Gratitude Journal',
+                    style: TextStyle(
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.bold)),
+                SizedBox(width: 5),
+                Icon(Icons.create_rounded, color: Colors.white, size: 25)
               ],
             ),
-            backgroundColor: Colors.red),
+            backgroundColor: Colors.blueGrey),
         body: Container(
           child: Column(children: <Widget>[
-            SizedBox(height: 20,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
+            SizedBox(height: 20),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: <
+                Widget>[
               GestureDetector(
-                 onTap: (){
-                   Navigator.of(context).pushNamed('/home_screen');
-                 },
-                 child: Column(
-                   children: [
-                     CircleAvatar(
-                        radius: 27,
-                        child: CircleAvatar(
-                          child: Icon(Icons.dashboard , color: Colors.green, size: 30),
+                onTap: () {
+                  Navigator.of(context).pushNamed('/home_screen');
+                },
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      radius: 27,
+                      child: CircleAvatar(
+                          child: Icon(Icons.dashboard,
+                              color: Colors.green, size: 30),
                           radius: 25,
-                        backgroundColor: Colors.white  
-                        ),
-                        backgroundColor: Colors.green,
-                      ),
-                      SizedBox(height: 2.5),
-                      Text(
-                        'Dashboard',
+                          backgroundColor: Colors.white),
+                      backgroundColor: Colors.green,
+                    ),
+                    SizedBox(height: 2.5),
+                    Text('Dashboard',
                         style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: Colors.green,
-                          fontSize: 15
-                        )
-                      )
-                   ],
-                 ),
-             ),
-             GestureDetector(
-                 onTap: () {
+                            fontWeight: FontWeight.w500,
+                            color: Colors.green,
+                            fontSize: 15))
+                  ],
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
                   showDatePicker(
                           context: context,
                           initialDate: DateTime.now(),
@@ -116,89 +114,81 @@ class _StartPageState extends State<StartPage> {
                                   '/' +
                                   date.month.toString();
                             }),
-                          }
-                       );
-                 },
-                 child: Column(
-                   children: [
-                     CircleAvatar(
-                     radius: 27,
-                     child: CircleAvatar(
-                       child: Icon(
-                         Icons.calendar_today, 
-                         color: Colors.blue, 
-                         size: 30),
-                       radius: 25,
-                       backgroundColor: Colors.white  
-                     ),
+                          });
+                },
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      radius: 27,
+                      child: CircleAvatar(
+                          child: Icon(Icons.calendar_today,
+                              color: Colors.blue, size: 30),
+                          radius: 25,
+                          backgroundColor: Colors.white),
                       backgroundColor: Colors.blue,
                     ),
-                     SizedBox(height: 2.5,),
-                     Text(
-                       'Pick a date',
-                       style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: Colors.blue,
-                          fontSize: 15
-                        )
-                       )
-                   ],
-                 ),
-             ),
-             GestureDetector(
-                 onTap: (){
-                  showTimePicker(
-                          context: context, initialTime: TimeOfDay.now())
+                    SizedBox(
+                      height: 2.5,
+                    ),
+                    Text('Pick a date',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Colors.blue,
+                            fontSize: 15))
+                  ],
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  showTimePicker(context: context, initialTime: TimeOfDay.now())
                       .then((time) => {
                             setState(() {
                               timepicked = time.format(context).toString();
                             })
                           });
-                 },
-                 child: Column(
-                   children: [
-                     CircleAvatar(
-                     radius: 27,
-                     child: CircleAvatar(
-                       child: Icon(Icons.timer , color: Colors.red, size: 30),
-                       radius: 25,
-                       backgroundColor: Colors.white  
-                     ),
-                     backgroundColor: Colors.red,
+                },
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      radius: 27,
+                      child: CircleAvatar(
+                          child: Icon(Icons.timer, color: Colors.red, size: 30),
+                          radius: 25,
+                          backgroundColor: Colors.white),
+                      backgroundColor: Colors.red,
                     ),
-                    SizedBox(height: 2.5,),
-                     Text(
-                       'Pick a time',
-                       style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: Colors.red,
-                          fontSize: 15
-                        )
-                       )
-                   ],
-                 ),
-             ),
+                    SizedBox(
+                      height: 2.5,
+                    ),
+                    Text('Pick a time',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Colors.red,
+                            fontSize: 15))
+                  ],
+                ),
+              ),
             ]),
             SizedBox(height: 20),
             Container(
-                height: 30,
-                width: 30,
-                child: FloatingActionButton(
-                  backgroundColor: Colors.red,
-                  child: Icon(Icons.done),
-                  onPressed: () => setState(() {
-                    datetime = datepicked + '   ' + timepicked;
-                  }),
-                ),
+              height: 30,
+              width: 30,
+              child: FloatingActionButton(
+                backgroundColor: Colors.red,
+                child: Icon(Icons.done),
+                onPressed: () => setState(() {
+                  datetime = datepicked + '   ' + timepicked;
+                }),
               ),
+            ),
             SizedBox(height: 20),
-            Text('WHAT YOU FEELING NOW?',
+            Text('HOW ARE YOU FEELING?',
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-                SizedBox(height:6),
-              Text('(Tap to Select and Tap again to deselect!)' , style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
-            
+            SizedBox(height: 6),
+            Text('(Tap to Select and Tap again to deselect)',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
             Expanded(
-                  child: ListView.builder(
+              child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: moods.length,
                   itemBuilder: (context, index) {
@@ -235,13 +225,13 @@ class _StartPageState extends State<StartPage> {
                     );
                   }),
             ),
-            Text('WHAT YOU HAVE BEEN DOING?',
-                style: TextStyle(fontSize: 22 ,  fontWeight: FontWeight.bold)),
+            Text('WHAT HAVE YOU BEEN UP TO?',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
             SizedBox(height: 10),
             Text('Hold on the activity to select,You can choose multiple',
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
             Expanded(
-                          child: ListView.builder(
+              child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: act.length,
                   itemBuilder: (context, index) {
@@ -275,23 +265,23 @@ class _StartPageState extends State<StartPage> {
                   }),
             ),
             GestureDetector(
-                onTap: () => {
-                      setState(() {
-                        Provider.of<MoodCard>(context, listen: false).addPlace(
-                            datetime,
-                            mood,
-                            image,
-                            Provider.of<MoodCard>(context, listen: false)
-                                .activityimage
-                                .join('_'),
-                            Provider.of<MoodCard>(context, listen: false)
-                                .activityname
-                                .join('_'),
-                            dateonly);
-                      }),
-                      Navigator.of(context).pushNamed('/home_screen'),
-                    },
-                child: Container(
+              onTap: () => {
+                setState(() {
+                  Provider.of<MoodCard>(context, listen: false).addPlace(
+                      datetime,
+                      mood,
+                      image,
+                      Provider.of<MoodCard>(context, listen: false)
+                          .activityimage
+                          .join('_'),
+                      Provider.of<MoodCard>(context, listen: false)
+                          .activityname
+                          .join('_'),
+                      dateonly);
+                }),
+                Navigator.of(context).pushNamed('/home_screen'),
+              },
+              child: Container(
                 height: 38.00,
                 width: 117.00,
                 child: Row(
@@ -306,14 +296,20 @@ class _StartPageState extends State<StartPage> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(width: 5,),
-                    Icon(Icons.save_alt , size: 20 , color: Colors.white)
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Icon(Icons.save_alt, size: 20, color: Colors.white)
                   ],
                 ),
                 decoration: BoxDecoration(
                   color: Color(0xffff3d00),
-                  border: Border.all(width: 1.00, color: Color(0xffff3d00),), borderRadius: BorderRadius.circular(19.00), 
-                ), 
+                  border: Border.all(
+                    width: 1.00,
+                    color: Color(0xffff3d00),
+                  ),
+                  borderRadius: BorderRadius.circular(19.00),
+                ),
               ),
             ),
             SizedBox(height: 15)
