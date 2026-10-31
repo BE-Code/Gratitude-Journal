@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_quill/flutter_quill.dart' hide Text;
+import 'package:flutter_quill/flutter_quill.dart';
 
 class Editor extends StatefulWidget {
   @override
@@ -7,8 +7,13 @@ class Editor extends StatefulWidget {
 }
 
 class _EditorState extends State<Editor> {
-  String entry;
-  QuillController _controller = QuillController.basic();
+  final QuillController _controller = QuillController.basic();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   void initState() {
     super.initState();
@@ -33,12 +38,11 @@ class _EditorState extends State<Editor> {
           backgroundColor: Colors.blueGrey),
       body: Container(
         child: Column(children: <Widget>[
-          QuillToolbar.basic(controller: _controller),
+          QuillSimpleToolbar(controller: _controller),
           Expanded(
             child: Container(
               child: QuillEditor.basic(
                 controller: _controller,
-                readOnly: false, // true for view only mode
               ),
             ),
           )

@@ -4,7 +4,6 @@ import 'package:moodairy/helpers/mooddata.dart';
 import 'package:moodairy/models/moodcard.dart';
 import 'package:moodairy/widgets/moodDayCard.dart';
 import 'package:provider/provider.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 
 class OldHomeScreen extends StatefulWidget {
   @override
@@ -28,72 +27,55 @@ class _OldHomeScreenState extends State<OldHomeScreen> {
                     onPressed: () => Navigator.of(context).pushNamed('/chart'))
               ],
             ),
-            body: FutureBuilder<List>(
+            body: FutureBuilder<List<Map<String, dynamic>>>(
               future: DBHelper.getData('user_moods'),
-              initialData: List(),
+              initialData: const [],
               builder: (context, snapshot) {
                 return snapshot.hasData
                     ? ListView.builder(
                         shrinkWrap: true,
-                        itemCount: snapshot.data.length,
+                        itemCount: snapshot.data!.length,
                         itemBuilder: (context, int position) {
-                          var imagestring = snapshot.data[position]['actimage'];
+                          final row = snapshot.data![position];
+                          var imagestring = row['actimage'];
                           List<String> img = imagestring.split('_');
-                          List<String> name =
-                              snapshot.data[position]['actname'].split("_");
+                          List<String> name = row['actname'].split("_");
                           Provider.of<MoodCard>(context, listen: false)
                               .actiname
                               .addAll(name);
                           Provider.of<MoodCard>(context, listen: false)
                               .data
                               .add(MoodData(
-                                  snapshot.data[position]['mood'] == 'Angry'
+                                  row['mood'] == 'Angry'
                                       ? 1
-                                      : snapshot.data[position]['mood'] ==
-                                              'Happy'
+                                      : row['mood'] == 'Happy'
                                           ? 2
-                                          : snapshot.data[position]['mood'] ==
-                                                  'Sad'
+                                          : row['mood'] == 'Sad'
                                               ? 3
-                                              : snapshot.data[position]['mood'] ==
-                                                      'Surprised'
+                                              : row['mood'] == 'Surprised'
                                                   ? 4
-                                                  : snapshot.data[position]
-                                                              ['mood'] ==
-                                                          'Loving'
+                                                  : row['mood'] == 'Loving'
                                                       ? 5
-                                                      : snapshot.data[position]
-                                                                  ['mood'] ==
-                                                              'Scared'
+                                                      : row['mood'] == 'Scared'
                                                           ? 6
                                                           : 7,
-                                  snapshot.data[position]['date'],
-                                  snapshot.data[position]['mood'] == 'Angry'
-                                      ? charts.ColorUtil.fromDartColor(
-                                          Colors.red)
-                                      : snapshot.data[position]['mood'] ==
-                                              'Happy'
-                                          ? charts.ColorUtil.fromDartColor(
-                                              Colors.blue)
-                                          : snapshot.data[position]['mood'] ==
-                                                  'Sad'
-                                              ? charts.ColorUtil.fromDartColor(
-                                                  Colors.green)
-                                              : snapshot.data[position]['mood'] ==
-                                                      'Surprised'
-                                                  ? charts.ColorUtil.fromDartColor(Colors.pink)
-                                                  : snapshot.data[position]['mood'] == 'Loving'
-                                                      ? charts.ColorUtil.fromDartColor(Colors.purple)
-                                                      : snapshot.data[position]['mood'] == 'Scared'
-                                                          ? charts.ColorUtil.fromDartColor(Colors.black)
-                                                          : charts.ColorUtil.fromDartColor(Colors.white)));
+                                  row['date'],
+                                  row['mood'] == 'Angry'
+                                      ? Colors.red
+                                      : row['mood'] == 'Happy'
+                                          ? Colors.blue
+                                          : row['mood'] == 'Sad'
+                                              ? Colors.green
+                                              : row['mood'] == 'Surprised'
+                                                  ? Colors.pink
+                                                  : row['mood'] == 'Loving'
+                                                      ? Colors.purple
+                                                      : row['mood'] == 'Scared'
+                                                          ? Colors.black
+                                                          : Colors.white));
 
-                          return MoodDay(
-                              snapshot.data[position]['image'],
-                              snapshot.data[position]['datetime'],
-                              snapshot.data[position]['mood'],
-                              img,
-                              name);
+                          return MoodDay(row['image'], row['datetime'],
+                              row['mood'], img, name);
                         },
                       )
                     : Center(

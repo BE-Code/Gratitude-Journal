@@ -13,13 +13,12 @@ class OldStartPage extends StatefulWidget {
 }
 
 class _OldStartPageState extends State<OldStartPage> {
-  MoodCard moodCard;
-  String mood;
-  String image;
-  String datepicked;
-  String timepicked;
-  String datetime;
-  int currentindex;
+  String? mood;
+  String? image;
+  String? datepicked;
+  String? timepicked;
+  String? datetime;
+  String? dateonly;
   int ontapcount = 0;
   List<Mood> moods = [
     Mood('assets/smile.png', 'Happy', false),
@@ -50,7 +49,75 @@ class _OldStartPageState extends State<OldStartPage> {
     super.initState();
   }
 
-  String dateonly;
+  Future<void> _selectDate() async {
+    final date = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2001),
+      lastDate: DateTime.now(),
+    );
+    if (!mounted || date == null) return;
+
+    setState(() {
+      datepicked = '${date.day}-${date.month}-${date.year}';
+      dateonly = '${date.day}/${date.month}';
+    });
+  }
+
+  Future<void> _selectTime() async {
+    final time = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    if (!mounted || time == null) return;
+
+    setState(() {
+      timepicked = time.format(context);
+    });
+  }
+
+  void _setDateTime() {
+    if (datepicked == null || timepicked == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Select a date and time first.')),
+      );
+      return;
+    }
+
+    setState(() {
+      datetime = '$datepicked   $timepicked';
+    });
+  }
+
+  Future<void> _saveEntry() async {
+    final entryDatetime = datetime;
+    final entryMood = mood;
+    final entryImage = image;
+    final entryDate = dateonly;
+    if (entryDatetime == null ||
+        entryMood == null ||
+        entryImage == null ||
+        entryDate == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Select a date, time, and mood before saving.'),
+        ),
+      );
+      return;
+    }
+
+    final moodCard = Provider.of<MoodCard>(context, listen: false);
+    await moodCard.addPlace(
+      entryDatetime,
+      entryMood,
+      entryImage,
+      moodCard.activityimage.join('_'),
+      moodCard.activityname.join('_'),
+      entryDate,
+    );
+    if (mounted) Navigator.of(context).pushNamed('/home_screen');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,105 +137,82 @@ class _OldStartPageState extends State<OldStartPage> {
         body: Container(
           child: Column(children: <Widget>[
             SizedBox(height: 20),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: <
-                Widget>[
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushNamed('/home_screen');
-                },
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      radius: 27,
-                      child: CircleAvatar(
-                          child: Icon(Icons.dashboard,
-                              color: Colors.green, size: 30),
-                          radius: 25,
-                          backgroundColor: Colors.white),
-                      backgroundColor: Colors.green,
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed('/home_screen');
+                    },
+                    child: Column(
+                      children: [
+                        CircleAvatar(
+                          radius: 27,
+                          child: CircleAvatar(
+                              child: Icon(Icons.dashboard,
+                                  color: Colors.green, size: 30),
+                              radius: 25,
+                              backgroundColor: Colors.white),
+                          backgroundColor: Colors.green,
+                        ),
+                        SizedBox(height: 2.5),
+                        Text('Dashboard',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: Colors.green,
+                                fontSize: 15))
+                      ],
                     ),
-                    SizedBox(height: 2.5),
-                    Text('Dashboard',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Colors.green,
-                            fontSize: 15))
-                  ],
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2001),
-                          lastDate: DateTime(2022))
-                      .then((date) => {
-                            setState(() {
-                              datepicked = date.day.toString() +
-                                  '-' +
-                                  date.month.toString() +
-                                  '-' +
-                                  date.year.toString();
-                              dateonly = date.day.toString() +
-                                  '/' +
-                                  date.month.toString();
-                            }),
-                          });
-                },
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      radius: 27,
-                      child: CircleAvatar(
-                          child: Icon(Icons.calendar_today,
-                              color: Colors.blue, size: 30),
-                          radius: 25,
-                          backgroundColor: Colors.white),
-                      backgroundColor: Colors.blue,
+                  ),
+                  GestureDetector(
+                    onTap: _selectDate,
+                    child: Column(
+                      children: [
+                        CircleAvatar(
+                          radius: 27,
+                          child: CircleAvatar(
+                              child: Icon(Icons.calendar_today,
+                                  color: Colors.blue, size: 30),
+                              radius: 25,
+                              backgroundColor: Colors.white),
+                          backgroundColor: Colors.blue,
+                        ),
+                        SizedBox(
+                          height: 2.5,
+                        ),
+                        Text('Pick a date',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: Colors.blue,
+                                fontSize: 15))
+                      ],
                     ),
-                    SizedBox(
-                      height: 2.5,
+                  ),
+                  GestureDetector(
+                    onTap: _selectTime,
+                    child: Column(
+                      children: [
+                        CircleAvatar(
+                          radius: 27,
+                          child: CircleAvatar(
+                              child: Icon(Icons.timer,
+                                  color: Colors.red, size: 30),
+                              radius: 25,
+                              backgroundColor: Colors.white),
+                          backgroundColor: Colors.red,
+                        ),
+                        SizedBox(
+                          height: 2.5,
+                        ),
+                        Text('Pick a time',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: Colors.red,
+                                fontSize: 15))
+                      ],
                     ),
-                    Text('Pick a date',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Colors.blue,
-                            fontSize: 15))
-                  ],
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  showTimePicker(context: context, initialTime: TimeOfDay.now())
-                      .then((time) => {
-                            setState(() {
-                              timepicked = time.format(context).toString();
-                            })
-                          });
-                },
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      radius: 27,
-                      child: CircleAvatar(
-                          child: Icon(Icons.timer, color: Colors.red, size: 30),
-                          radius: 25,
-                          backgroundColor: Colors.white),
-                      backgroundColor: Colors.red,
-                    ),
-                    SizedBox(
-                      height: 2.5,
-                    ),
-                    Text('Pick a time',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Colors.red,
-                            fontSize: 15))
-                  ],
-                ),
-              ),
-            ]),
+                  ),
+                ]),
             SizedBox(height: 20),
             Container(
               height: 30,
@@ -176,9 +220,7 @@ class _OldStartPageState extends State<OldStartPage> {
               child: FloatingActionButton(
                 backgroundColor: Colors.red,
                 child: Icon(Icons.done),
-                onPressed: () => setState(() {
-                  datetime = datepicked + '   ' + timepicked;
-                }),
+                onPressed: _setDateTime,
               ),
             ),
             SizedBox(height: 20),
@@ -218,6 +260,8 @@ class _OldStartPageState extends State<OldStartPage> {
                                       setState(() {
                                         moods[index].iselected = false;
                                         ontapcount = 0;
+                                        mood = null;
+                                        image = null;
                                       })
                                     }
                                 }),
@@ -265,22 +309,7 @@ class _OldStartPageState extends State<OldStartPage> {
                   }),
             ),
             GestureDetector(
-              onTap: () => {
-                setState(() {
-                  Provider.of<MoodCard>(context, listen: false).addPlace(
-                      datetime,
-                      mood,
-                      image,
-                      Provider.of<MoodCard>(context, listen: false)
-                          .activityimage
-                          .join('_'),
-                      Provider.of<MoodCard>(context, listen: false)
-                          .activityname
-                          .join('_'),
-                      dateonly);
-                }),
-                Navigator.of(context).pushNamed('/home_screen'),
-              },
+              onTap: _saveEntry,
               child: Container(
                 height: 38.00,
                 width: 117.00,

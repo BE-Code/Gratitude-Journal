@@ -1,9 +1,9 @@
+import 'package:flutter/material.dart';
 
-import 'package:charts_flutter/flutter.dart' as charts;
-class MoodData{
+class MoodData {
   String date;
   int moodno;
-  final charts.Color barColor;
+  final Color barColor;
 
-  MoodData(this.moodno,this.date,this.barColor);
+  MoodData(this.moodno, this.date, this.barColor);
 }

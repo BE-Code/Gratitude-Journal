@@ -22,11 +22,11 @@ showLoaderDialog(BuildContext context) {
 }
 
 class MoodDay extends StatefulWidget {
-  String datetime;
-  String mood;
-  String image;
-  List<String> a;
-  List<String> b;
+  final String datetime;
+  final String mood;
+  final String image;
+  final List<String> a;
+  final List<String> b;
 
   MoodDay(this.image, this.datetime, this.mood, this.a, this.b);
 
@@ -60,7 +60,7 @@ class _MoodDayState extends State<MoodDay> {
                 ),
                 SizedBox(width: 10),
                 Text(
-                  widget.datetime ?? 'nothing',
+                  widget.datetime,
                   style: TextStyle(
                       fontStyle: FontStyle.normal,
                       fontWeight: FontWeight.bold,
@@ -111,7 +111,7 @@ class _MoodDayState extends State<MoodDay> {
                         return Row(
                           children: <Widget>[
                             Text(
-                              widget.b[index] ?? 'nothinng',
+                              widget.b[index],
                               style: TextStyle(
                                   fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.bold,

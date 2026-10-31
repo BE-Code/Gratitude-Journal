@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moodairy/helpers/mooddata.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:fl_chart/fl_chart.dart' hide PieChart;
 import 'package:moodairy/models/moodcard.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:provider/provider.dart';
@@ -113,17 +113,13 @@ class _MoodChartState extends State<MoodChart> {
   @override
   Widget build(BuildContext context) {
     List<MoodData> data = Provider.of<MoodCard>(context, listen: true).data;
-    List<charts.Series<MoodData, String>> series = [
-      charts.Series(
-        id: 'Moods',
-        data: data,
-        domainFn: (MoodData series, _) => series.date,
-        measureFn: (MoodData series, _) => series.moodno,
-        colorFn: (MoodData series, _) => charts.ColorUtil.fromDartColor(
-          Color(0xFF74b9ff),
-        ),
-      )
-    ];
+    final maxY = data.isEmpty
+        ? 1.0
+        : data
+                .map((item) => item.moodno)
+                .reduce((first, second) => first > second ? first : second)
+                .toDouble() +
+            1;
 
     return Scaffold(
       appBar: AppBar(title: Text('Mood Graph'), backgroundColor: Colors.red),
@@ -160,9 +156,52 @@ class _MoodChartState extends State<MoodChart> {
           Container(
             height: 200,
             child: MyMoodCard(
-              charts.BarChart(
-                series,
-                animate: true,
+              BarChart(
+                BarChartData(
+                  maxY: maxY,
+                  barGroups: data.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    final mood = entry.value;
+                    return BarChartGroupData(
+                      x: index,
+                      barRods: [
+                        BarChartRodData(
+                          toY: mood.moodno.toDouble(),
+                          color: mood.barColor,
+                          width: 14,
+                        ),
+                      ],
+                    );
+                  }).toList(),
+                  titlesData: FlTitlesData(
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        reservedSize: 36,
+                        getTitlesWidget: (value, meta) {
+                          final index = value.toInt();
+                          if (index < 0 || index >= data.length) {
+                            return const SizedBox.shrink();
+                          }
+                          return SideTitleWidget(
+                            meta: meta,
+                            child: Text(
+                              data[index].date,
+                              style: const TextStyle(fontSize: 10),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    topTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    rightTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                  ),
+                  borderData: FlBorderData(show: false),
+                ),
               ),
             ),
           ),
@@ -233,8 +272,8 @@ class _MoodChartState extends State<MoodChart> {
 }
 
 class MyMoodCard extends StatefulWidget {
-  Widget w;
-  int direction; //0 - Left, 1 - Right. By default 0
+  final Widget w;
+  final int direction;
   MyMoodCard(this.w, {this.direction = 0});
 
   @override
@@ -243,8 +282,8 @@ class MyMoodCard extends StatefulWidget {
 
 class _MyMoodCardState extends State<MyMoodCard>
     with SingleTickerProviderStateMixin {
-  AnimationController _animationController;
-  Animation<double> _slideAnimation;
+  late final AnimationController _animationController;
+  late final Animation<double> _slideAnimation;
 
   @override
   void initState() {
@@ -254,6 +293,12 @@ class _MyMoodCardState extends State<MyMoodCard>
         CurvedAnimation(parent: _animationController, curve: Curves.ease));
     _animationController.forward();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override

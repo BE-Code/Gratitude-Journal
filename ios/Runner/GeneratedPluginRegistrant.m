@@ -6,34 +6,28 @@
 
 #import "GeneratedPluginRegistrant.h"
 
-#if __has_include(<device_info_plus/FPPDeviceInfoPlusPlugin.h>)
-#import <device_info_plus/FPPDeviceInfoPlusPlugin.h>
+#if __has_include(<flutter_keyboard_visibility_temp_fork/FlutterKeyboardVisibilityTempForkPlugin.h>)
+#import <flutter_keyboard_visibility_temp_fork/FlutterKeyboardVisibilityTempForkPlugin.h>
 #else
-@import device_info_plus;
+@import flutter_keyboard_visibility_temp_fork;
 #endif
 
-#if __has_include(<flutter_keyboard_visibility/FlutterKeyboardVisibilityPlugin.h>)
-#import <flutter_keyboard_visibility/FlutterKeyboardVisibilityPlugin.h>
+#if __has_include(<is_ios_simulator/IosSimulatorDetectionPlugin.h>)
+#import <is_ios_simulator/IosSimulatorDetectionPlugin.h>
 #else
-@import flutter_keyboard_visibility;
+@import is_ios_simulator;
 #endif
 
-#if __has_include(<pasteboard/PasteboardPlugin.h>)
-#import <pasteboard/PasteboardPlugin.h>
+#if __has_include(<quill_native_bridge_ios/QuillNativeBridgePlugin.h>)
+#import <quill_native_bridge_ios/QuillNativeBridgePlugin.h>
 #else
-@import pasteboard;
+@import quill_native_bridge_ios;
 #endif
 
-#if __has_include(<path_provider_foundation/PathProviderPlugin.h>)
-#import <path_provider_foundation/PathProviderPlugin.h>
+#if __has_include(<sqflite_darwin/SqflitePlugin.h>)
+#import <sqflite_darwin/SqflitePlugin.h>
 #else
-@import path_provider_foundation;
-#endif
-
-#if __has_include(<sqflite/SqflitePlugin.h>)
-#import <sqflite/SqflitePlugin.h>
-#else
-@import sqflite;
+@import sqflite_darwin;
 #endif
 
 #if __has_include(<url_launcher_ios/URLLauncherPlugin.h>)
@@ -45,10 +39,9 @@
 @implementation GeneratedPluginRegistrant
 
 + (void)registerWithRegistry:(NSObject<FlutterPluginRegistry>*)registry {
-  [FPPDeviceInfoPlusPlugin registerWithRegistrar:[registry registrarForPlugin:@"FPPDeviceInfoPlusPlugin"]];
-  [FlutterKeyboardVisibilityPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterKeyboardVisibilityPlugin"]];
-  [PasteboardPlugin registerWithRegistrar:[registry registrarForPlugin:@"PasteboardPlugin"]];
-  [PathProviderPlugin registerWithRegistrar:[registry registrarForPlugin:@"PathProviderPlugin"]];
+  [FlutterKeyboardVisibilityTempForkPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterKeyboardVisibilityTempForkPlugin"]];
+  [IosSimulatorDetectionPlugin registerWithRegistrar:[registry registrarForPlugin:@"IosSimulatorDetectionPlugin"]];
+  [QuillNativeBridgePlugin registerWithRegistrar:[registry registrarForPlugin:@"QuillNativeBridgePlugin"]];
   [SqflitePlugin registerWithRegistrar:[registry registrarForPlugin:@"SqflitePlugin"]];
   [URLLauncherPlugin registerWithRegistrar:[registry registrarForPlugin:@"URLLauncherPlugin"]];
 }
