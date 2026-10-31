@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:moodairy/models/activity.dart';
 import 'package:moodairy/models/moodcard.dart';
 import 'package:moodairy/screens/chart.dart';
-import 'package:moodairy/screens/homepage.dart';
-import 'package:moodairy/screens/start.dart';
 import 'package:moodairy/screens/jHomepage.dart';
 import 'package:moodairy/screens/editor.dart';
 import 'package:provider/provider.dart';

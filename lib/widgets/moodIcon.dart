@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:moodairy/models/moodcard.dart';
 
 class MoodIcon extends StatelessWidget {
   final String image;
