@@ -1,0 +1,23 @@
+# Flutter and Dart generated files
+.dart_tool/
+.packages
+.flutter-plugins
+.flutter-plugins-dependencies
+**/build/
+
+# IDE and local machine configuration
+.idea/
+**/.gradle/
+local.properties
+
+# Generated iOS Flutter configuration
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+ios/Flutter/ephemeral/
+ios/Pods/
+ios/.symlinks/
+
+# Platform and OS noise
+.DS_Store
+Thumbs.db
+*.log
